@@ -1,0 +1,33 @@
+@import url("../library/library.css");
+
+.content {
+  margin: 2% 20% 2% 5%;
+}
+
+.chapter-navigation {
+  position: fixed;
+  right: 2%;
+  top: 100px;
+  list-style: none;
+  padding: 20px;
+  border-radius: 50px;
+}
+
+.chapter-navigation a{
+  color: #f0f0f0;
+  text-decoration: none;
+}
+
+.chapter-navigation a:hover {
+  color: #d78d33;
+  transition: 0.4s;
+}
+
+.book-link a:hover{
+  color: #aa6d22;
+}
+
+.ln-break {
+  border: 0;
+  border-top: 5px solid #4d77b3;
+}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<!-- Prevent Firefox from yelling at me -->
+<meta charset="utf-8"/>
+
+<html id="html">
+    <head>
+        <link href="./stylesheets/about-stylesheet.css" type=text/css rel='stylesheet'>
+        <!-- JQuery Content Delivery Network (CDN) hosted by Google -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    </head>
+    <body class="body theme2" id="body">
+      <script>
+          // Short hand for $(document).ready()
+          // Will run when Document Object Model (DOM) is safe to be modified
+          $(function(){
+              $('#navigation-panel').load('./library/collapse-reusable.html');
+          });    
+      </script>
+
+      <!-- Will automatically populate with reusable template -->
+      <div id="navigation-panel"></div>
+
+      <!-- First Parallax Element -->
+      <div class="parallax opacity-75 image1">
+        <div class="display-middle theme2-back">
+          <h2 class="raleway theme7 about-myself-label">ABOUT ME</h2>
+        </div>
+      </div>
+
+      <!-- Information block -->
+      <div class="about-myself-text center">
+          <hr class="line-break width-40">
+          <p class="mali theme7 opacity-75">Hello! My name is Michael Tran and I am a 4th year studying computer science. 
+            My interests in computer science relates to game design and software development (mobile or computer).
+            However, I have yet to explore many aspects of computer science like cloud computing, 
+            data visualization, and much more. I hope to learn a lot about data visualization and
+            other parts of computer science that I have never even encountered.</p>
+          <hr class="line-break width-40">
+      </div>
+
+      <!-- Second Parallax Element -->
+      <div class="parallax opacity-75 image2"></div>
+
+      <!-- Information block -->
+      <div class="about-myself-text center">
+          <hr class="line-break width-40">          
+          <p class="mali theme7 opacity-75">Major aside, I have many hobbies outside of school/Computer Science. One of my fun facts is that
+              I love cruising on my longboard (I built it using longboard parts). I am learning
+              how to play the guitar through YouTube videos since I never grew up playing an instrument.
+              In terms of games, I play a lot of games that are free on the market such as,
+            <abbr title="Old School Runescape">OSRS</abbr>, <abbr title="League of Legends">League</abbr>,
+              and Maplestory. One game that I bought two years ago was Slay the Spire and it is an amazing game.
+              The game is a card deck building game in which you use the cards to fight monsters in rooms to continue
+              up the tower. Everytime you defeat a level with a monster, you pull 3 cards and can select one or none
+              of the cards. There is a lot of strategy and sometimes luck that gets used in the game. I could get into
+              more of that, but I think I have been nerding out too much. </p>
+          <hr class="line-break width-40">                
+      </div>
+
+      <!-- Third Parallax Element -->
+      <div class="parallax opacity-75 image3"></div>
+    </body>
+</html>

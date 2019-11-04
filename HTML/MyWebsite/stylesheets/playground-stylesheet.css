@@ -1,0 +1,35 @@
+@import url("../library/library.css");
+
+
+.topo path {
+  stroke: #fff;
+  stroke-width: .5px;
+  transition: fill 0.2s ease;
+}
+
+.topo path:hover {
+  fill: #ff6961;
+}
+
+#div_bar_chart {
+  margin: 20px;
+}
+
+#div_bar_chart div {
+  font-size: 10px;
+  font-family: sans-serif;
+  background-color: green;
+  text-align: right;
+  padding: 3px;
+  margin: 1px;
+  color: white;
+}
+
+#bar {
+  display: inline-block;
+  width: 20px;
+  height: 75px; /* We'll override height later */
+  background-color: black;
+}
+
+

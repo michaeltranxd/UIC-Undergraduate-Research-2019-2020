@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+
+<!-- Prevent Firefox from yelling at me -->
+<meta charset="utf-8"/>
+
+<html id="html">
+  <head>
+    <link href="./stylesheets/weekly-reflections-stylesheet.css" type=text/css rel='stylesheet'>
+    <!-- JQuery Content Delivery Network (CDN) hosted by Google -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  </head>
+
+  <script>
+    // Short hand for $(document).ready()
+    // Will run when Document Object Model (DOM) is safe to be modified
+    $(function(){
+        $('#navigation-panel').load('./library/collapse-reusable.html');
+    });    
+  </script>
+
+  <!-- Will automatically populate with reusable template -->
+  <div id="navigation-panel"></div>
+
+
+  <script>
+    function scrollTop(){
+      windows.scrollTop=0;
+    }
+  </script>
+
+
+
+  <body class="body theme2-back" id="body"> 
+
+    <div class="chapter-navigation theme8-back center mali opacity-90"> 
+        <a href="#chapter-one">Chapter 1</a> <hr class="ln-break">
+        <a href="#chapter-two">Chapter 2</a> <hr class="ln-break">
+        <a href="#chapter-three">Chapter 3</a> <hr class="ln-break">
+        <a href="#chapter-four">Chapter 4</a> <hr class="ln-break">
+        <a href="#chapter-five">Chapter 5</a> <hr class="ln-break">
+        <a href="#chapter-six">Chapter 6</a> <hr class="ln-break">
+        <a href="#chapter-seven">Chapter 7</a> <hr class="ln-break">
+        <a href="#chapter-eight">Chapter 8</a> <hr class="ln-break">
+        <a href="#chapter-nine">Chapter 9</a> <hr class="ln-break">
+        <a href="#chapter-ten">Chapter 10</a> <hr class="ln-break">
+        <a href="#chapter-eleven">Chapter 11</a> <hr class="ln-break">
+        <a href="#html">Back to Top</a>
+    </div>
+
+    <div class="mali theme3 center no-margin size40">
+      <h1>Weekly Reflections</h1>
+      <hr class="line-break width-40">
+      <h1 class="book-link size20 theme7">Reflections made after reading book, <br><a class="theme3 no-outline-links" href="https://www.cs.ubc.ca/~tmm/private/book/book.120803.pdf" target="_blank">
+        "Visualization Design and Analysis: Abstractions, Principles, and Methods"</a>
+      </h1>
+    </div>
+    
+    <div class="content">
+      <div id="chapter-one">
+        <h1 class="dancing-script size40 theme9">Chapter One</h1>
+        <ul class="size20 theme7">
+        <li>Many resource limitiations, but change blindness was the most striking. Change blindess was the phenomenon in which a person is too focused attending something else in their view that large changes are unnoticed</li>
+        <li>Different views of data can change the outcome (Anscombe's Quartet with different structures graphically, but identical statistics (mean, variance, correlation, linear regression)</li>
+        <li>Visualizations are supposed to augment human capabilities and not replace the human itself. Example given was the automatic system for stock selling. No point in creating visualization when computer will automate the process</li>
+        <br>
+        <hr class="line-break">
+        <br>
+        <li>How would you know if the visualization you created was the best selected solution? Because people have varying opinions of the best visualization solution</li>
+        <li>How should we make the visualization better when we cannot optimize (due to tradeoffs)?</li>
+        </ul>
+      </div>
+      <div id="chapter-two">
+        <h1 class="dancing-script size40 theme9">Chapter Two</h1>
+        <ul class="size20 theme7">
+          <li>Four Levels of Design with their threats and validations</li>
+          <li>Domain, Abstraction, Visual Encoding, Algorithm are set in a cascading effect where an issue in domain may affect the latter</li>
+          <li>You are able to start from the top level and work downwards or start from inner levels and work upwards depending on the type of work (Problem-Driven vs. Technique-Driven)</li>
+          <br>
+          <hr class="line-break">
+          <br>
+          <li>What does the author mean by downstream vs. immediate validation?</li>
+          <li>For enhancements of existing visualization, are they considered technique-driven? If so, would it be safe to assume that the other parts can be validated by the existing visualization?</li>
+        </ul>
+
+      </div>
+      <div id="chapter-three">
+        <h1 class="dancing-script size40 theme9">Chapter Three</h1>
+        <ul class="size20 theme7">
+          <li>Missing...</li>
+          <br>
+          <hr class="line-break">
+          <br>
+        </ul>      
+      </div>
+      <div id="chapter-four">
+        <h1 class="dancing-script size40 theme9">Chapter Four</h1>
+        <ul class="size20 theme7">
+          <li>Different types of fields; scalar field is univariate (one value attribute), vector field is bivariate
+            (two value attribute), tensor field is multivariate (three or more value attributes)
+          </li>
+          <li>Color highlighting with different views to show regions that are contiguous in one views
+            fall in other views is one possible way to displaying data
+          </li>
+          <li>Data has many abstraction layers to it and transforming it to data that is useful 
+            for the task is up to the visualization designer
+          </li>
+          <br>
+          <hr class="line-break">
+          <li>I do not understand SPLOM in detail and the purpose of the examples that they gave in 4.6.2.3</li>
+          <li>In 4.6.2.1 how do you determine node importance? In the example of nodes and rivers, would one
+            possible importance ordering be the number of inhabitants around the river?
+          </li>
+          <br>             
+        </ul>          
+      </div>
+      <div id="chapter-five">
+        <h1 class="dancing-script size40 theme9">Chapter Five</h1>
+        <ul class="size20 theme7">
+          <li>Pastel colors for bigger spots (like background) and brighter colors in smaller spaces because our eyes have a hard time detecting the low-saturated colors in small regions. Also, brighter colors in background can put a strain on the eyes</li>
+          <li>Weber’s Law is the amount of difference we detect is relative to context between two things, not absolute quantity. This was surprising to see the reasoning behind the optical illusions of the colors especially the checkerboard example in 5.1</li>
+          <li>Different channel types can sometimes be conflicting with each other, but can also enhance one another (shape and size)</li>
+          <br>
+          <hr class="line-break">
+          <br>          
+          <li>In 5.3.1 where are they getting the values from? How does the graph show that the rankings the author provided is reasonable?</li>
+          <li>If L*a*b* (CIELAB color space) can be used for interpolation and appear equal to our visual systems, how come it is not used more commonly than RGB? I have never heard of this new color space until I read the book so I was wondering about this</li>
+        </ul>         
+      </div>
+      <div id="chapter-six">
+        <h1 class="dancing-script size40 theme9">Chapter Six</h1>
+        <ul class="size20 theme7">
+          <li>Have not read this chapter</li>
+          <br>
+          <hr class="line-break">
+          <br>            
+        </ul>        
+      </div>
+      <div id="chapter-seven">
+        <h1 class="dancing-script size40 theme9">Chapter Seven</h1>
+        <ul class="size20 theme7">
+          <li>Have not read this chapter</li>
+          <br>
+          <hr class="line-break">
+          <br>         
+        </ul>           
+      </div>
+      <div id="chapter-eight">
+        <h1 class="dancing-script size40 theme9">Chapter Eight</h1>
+        <ul class="size20 theme7">
+          <li>Have not read this chapter</li>
+          <br>
+          <hr class="line-break">
+          <br>          
+        </ul>          
+      </div>
+      <div id="chapter-nine">
+        <h1 class="dancing-script size40 theme9">Chapter Nine</h1>
+        <ul class="size20 theme7">
+          <li>Have not read this chapter</li>
+          <br>
+          <hr class="line-break">
+          <br>         
+        </ul>          
+      </div>
+      <div id="chapter-ten">
+        <h1 class="dancing-script size40 theme9">Chapter Ten</h1>
+        <ul class="size20 theme7">
+          <li>Have not read this chapter</li>
+          <br>
+          <hr class="line-break">
+          <br>         
+        </ul>          
+      </div>
+      <div id="chapter-eleven">
+        <h1 class="dancing-script size40 theme9">Chapter Eleven</h1>
+        <ul class="size20 theme7">
+          <li>Have not read this chapter</li>
+          <br>
+          <hr class="line-break">
+          <br>           
+        </ul>          
+      </div>
+    </div>
+
+
+  </body>
+  
+  <footer>
+
+  </footer>
+</html>

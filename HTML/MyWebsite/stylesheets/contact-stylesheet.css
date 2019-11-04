@@ -1,0 +1,48 @@
+@import url("../library/library.css");
+
+.image {
+  background-image: url("../media/contact_background.jpg");
+}
+
+.contact-label {
+  padding: 0 24px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr 200px;
+  grid-template-areas: "phone-img email-img"
+                       "phone email"
+
+}
+
+.grid .phone {
+  grid-area: "phone"
+}
+
+.grid .phone-img{
+  grid-area: "phone-img"
+}
+
+.grid .email {
+  grid-area: "email"
+}
+
+.grid .email-img{
+  grid-area: "email-img"
+}
+
+.fit-contact-container{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  width: 50%;
+  background-size: contain;
+}
+
+.email a:hover {
+  color: #c46e6e;
+  transition: 0.5s;
+}

@@ -1,0 +1,61 @@
+@import url("../library/library.css");
+
+.grid {
+  display: grid;
+  grid-template-rows: 75px repeat(7, 1fr);
+  grid-template-areas:  
+  ". . ."
+  "intro intro intro"
+  "intro intro intro"
+  "break1 break1 break1"
+  "after-intro after-intro after-intro"
+  "desc desc desc"
+  ". . ."
+  "last last last";
+        
+}
+
+.text-container {
+  grid-area: intro;
+  text-align: center;
+  line-height: 20px;
+  margin-bottom: 100px;
+}
+
+.website-logo {
+  padding: 0;
+  margin: 0 1% 1%;
+  text-align: left;
+  white-space: nowrap;
+  z-index: 2;
+}
+
+#break1 {
+  grid-area: break1;
+}
+
+#after-intro{
+  grid-area: after-intro;
+}
+
+#name {
+  font-size: 25px; 
+}
+
+#hello {
+  font-size: 150px; 
+}
+#desc {
+  font-size: 20px; 
+}
+
+#last {
+  grid-area: last;
+}
+
+.thankyou-entry {
+  margin: 0px 10% 5%;
+  border: 1px white solid;
+  border-radius: 30px;
+}
+

@@ -1,0 +1,77 @@
+.navigation-panel {
+  height: 100%;
+  width: 100%;
+}
+
+.collapsible{
+  right: 2%;
+  top: 2%;
+  height: 50px;
+  width: 50px;
+  position: fixed;
+  border-radius: 50%; /* circular button */
+  border: none; /* Remove borders */
+  outline: 0;  /* remove box around click */
+  opacity: 0.85;
+  z-index: 10; /* Stay on top */
+  transition: 0.1s;
+}
+
+.collapsible:hover{
+  background-color: #4fa136;
+  transition: 0.5s;
+}
+
+.navigation-content {
+  max-height: 0%; /* change to 100% when editing */
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;  
+  overflow: hidden;
+  z-index: 5; /* Stay on top */
+  transition: 1s;
+}
+
+.navigation-group{
+  display: grid;
+  grid-template-rows: repeat(8, 1fr);
+  text-align: center;
+  padding: 0px;
+  font-size: 20px;
+  margin-top: 20px; 
+}
+
+.navigation-a{
+  grid-row-start: 2;
+}
+.navigation-b{
+  grid-row-start: 3;
+}
+.navigation-c{
+  grid-row-start: 4;
+}
+.navigation-d{
+  grid-row-start: 5;
+}
+.navigation-e{
+  grid-row-start: 6;
+}
+
+.navigation-f{
+  grid-row-start: 7;
+}
+
+.navigation-group a:hover {
+  color: #4275bd;
+  transition: 0.6s;
+}
+
+@media all and (min-width: 50px)   {  .navigation-group  { font-size:0.1em;  } }
+@media all and (min-width: 200px)  {  .navigation-group  { font-size:0.2em;  } }
+@media all and (min-width: 400px)  {  .navigation-group  { font-size:0.4em;  } }
+@media all and (min-width: 800px)  {  .navigation-group  { font-size:1.0em;  } }
+@media all and (min-width: 1600px) {  .navigation-group  { font-size:1.4em;  } }
+@media all and (min-width: 2400px) {  .navigation-group  { font-size:1.8em;  } }
+  

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<!-- Prevent Firefox from yelling at me -->
+<meta charset="utf-8"/>
+
+<html id="html">
+    <head>
+        <link href="./stylesheets/main-stylesheet.css" type=text/css rel='stylesheet'>
+        <!-- JQuery Content Delivery Network (CDN) hosted by Google -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    </head>
+  
+    <script>
+      // Short hand for $(document).ready()
+      // Will run when Document Object Model (DOM) is safe to be modified
+      $(function(){
+          $('#navigation-panel').load('./library/collapse-reusable.html');
+      });    
+    </script>
+
+    <!-- Will automatically populate with reusable template -->
+    <div id="navigation-panel"></div>
+
+    <body class="body theme2-back" id="body">  
+      <div class="website-logo">
+          <h2 class="theme6 dancing-script">Michael Tran</h2>
+      </div>
+      <div class="grid" id="grid">
+        <div class="text-container" id="intro">
+          <h2 class="rubik-mono-one theme4" id="hello">HELLO</h2>
+          <h3 class="raleway theme7" id="desc">Welcome to my personal website.</h3>
+        </div>
+
+        <hr class="line-break width-60 center" id="break1">
+
+        <div class="text-container" id="after-intro">
+          <h1 class="theme7" style="font-size: 40px">Nothing to see here...</h1>
+        </div>
+
+        <div class="thankyou-entry" id="last">
+          <h1 class="theme4 margin-lr-10">BIG thank you to Professor Marai for giving me an opportunity to work under her over the summer!!</h1>
+        </div>
+      </div>
+    </body>
+    
+    <footer>
+
+    </footer>
+</html>

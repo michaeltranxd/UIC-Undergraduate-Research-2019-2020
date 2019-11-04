@@ -1,0 +1,49 @@
+@import url("../library/library.css");
+
+/* cat:   https://img.purch.com/h/1400/aHR0cDovL3d3dy5saXZlc2NpZW5jZS5jb20vaW1hZ2VzL2kvMDAwLzEwNC84MzAvb3JpZ2luYWwvc2h1dHRlcnN0b2NrXzExMTA1NzIxNTkuanBn" */
+/* doggo: https://wallpaperplay.com/walls/full/4/6/2/224854.jpg" */
+
+.image1 {
+  background-image: url("../media/group_pic.jpg");
+}
+
+.image2 {
+  /* Image being used */
+  background-image: url("../media/cs.png");
+}
+
+.image3 {
+  background-image: url("https://wallpaperplay.com/walls/full/4/6/2/224854.jpg");
+}
+
+.about-myself-label {
+  padding: 0 24px;
+}
+
+.label {
+  vertical-align: middle;
+}
+
+.about-myself-text {  
+  padding: 0px 15%;
+  
+}
+
+@media only screen and (max-width: 600px){
+  .parallax {
+    background-attachment: scroll;
+    min-height: 400px;
+  }
+}
+
+@media only screen and (min-width: 50px)   {  .about-myself-label, .about-myself-text  { font-size:0.1em;  } }
+@media only screen and (min-width: 100px)  {  .about-myself-label, .about-myself-text  { font-size:0.2em;  } }
+@media only screen and (min-width: 200px)  {  .about-myself-label, .about-myself-text  { font-size:0.4em;  } }
+@media only screen and (min-width: 300px)  {  .about-myself-label, .about-myself-text  { font-size:0.6em;  } }
+@media only screen and (min-width: 400px)  {  .about-myself-label, .about-myself-text  { font-size:0.8em;  } }
+@media only screen and (min-width: 500px)  {  .about-myself-label, .about-myself-text  { font-size:1.0em;  } }
+@media only screen and (min-width: 600px)  {  .about-myself-label, .about-myself-text  { font-size:1.2em;  } }
+@media only screen and (min-width: 700px)  {  .about-myself-label, .about-myself-text  { font-size:1.4em;  } }
+@media only screen and (min-width: 800px)  {  .about-myself-label, .about-myself-text  { font-size:1.6em;  } }
+@media only screen and (min-width: 900px)  {  .about-myself-label, .about-myself-text  { font-size:1.8em;  } }
+@media only screen and (min-width: 1000px) {  .about-myself-label, .about-myself-text  { font-size:2.0em;  } }

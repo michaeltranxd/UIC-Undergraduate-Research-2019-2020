@@ -1,0 +1,48 @@
+<!-- How To Use
+  1.) Have <html id="html"> in html file
+  2.) Have @include url(".../navigation-menu.css")                
+  3.) Include the following in the <head>:
+
+    JQuery Content Delivery Network (CDN) hosted by Google // this is a comment
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  4.) Include the following in the <body>
+
+    Will automatically populate with reusable template // this is a comment
+    <div id="navigation-panel"></div>
+
+-->
+
+<div class="navigation-panel">
+    <button class="collapsible theme4-back theme2" id="navbutton" onclick="interactNavBar()">☰</button>
+
+    <div class="navigation-content theme1-back" id="navigation-content">
+        <div class="navigation-group">
+            <h2 class="navigation-a"><a class="theme7 mali no-outline-links" href="./">Home</a></h2>
+            <h2 class="navigation-b"><a class="theme7 mali no-outline-links" href="./research.html">Research</a></h2>
+            <h2 class="navigation-c"><a class="theme7 mali no-outline-links" href="./weekly-reflections.html">Weekly Reflections</a></h2>            
+            <h2 class="navigation-d"><a class="theme7 mali no-outline-links" href="./about.html">About</a></h2>            
+            <h2 class="navigation-e"><a class="theme7 mali no-outline-links" href="./contact.html">Contact</a></h2>
+            <h2 class="navigation-f"><a class="theme7 mali no-outline-links" href="./playground.html">Playground</a></h2>
+        </div>
+    </div>
+
+    <script>
+        var navBarOpened = false;
+        function interactNavBar() {
+            navBarOpened = !navBarOpened; // Switch the state of the variable depending on the previous state
+            if(navBarOpened){
+                document.getElementById("navigation-content").style.maxHeight = "100%"; // Expand to fit screen
+                document.getElementById("navbutton").innerHTML = "X";
+                document.getElementById("navbutton").style.transform = "rotate(360deg)";
+                document.getElementById("html").style.overflowY = 'hidden';
+            }
+            else{
+                document.getElementById("navigation-content").style.maxHeight = "0%"; // Hide the screen
+                document.getElementById("navbutton").innerHTML = "☰";
+                document.getElementById("navbutton").style.transform = "rotate(-360deg)";
+                document.getElementById("html").style.overflowY = 'scroll';
+            }
+        }
+    </script>
+</div>
