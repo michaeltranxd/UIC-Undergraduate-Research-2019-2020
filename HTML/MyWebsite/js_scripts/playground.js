@@ -1,8 +1,9 @@
+/* Function generates 1D array of size dataSetSize with values between minValue and maxValue INCLUSIVELY*/
 function generate1DRandomDataSet(dataSetSize, minValue, maxValue) {
   var dataset = []; //Initialize empty array
   for (var i = 0; i < dataSetSize; i++) {
-    var newNumber = Math.random() * (maxValue - minValue) + minValue;
-    newNumber = Math.round(newNumber) // Round to nearest integer value
+    var newNumber = Math.random() * (maxValue - minValue + 1) + minValue;
+    newNumber = Math.floor(newNumber) // Round to nearest integer value
     dataset.push(newNumber); //Add new number to array
   }
   return dataset
@@ -17,8 +18,21 @@ function mapDataToPopulation(data, dictionaryData){
   return dictionaryData
 }
 
+/* Function generates 2D array of size dataSetSizeX length and dataSetSizeY height with values
+   between minValue and maxValue INCLUSIVELY, row is X column is Y*/
 function generate2DRandomDataSet(dataSetSizeX, dataSetSizeY, minValue, maxValue){
+  var dataset = new Array(dataSetSizeX); //Initialize empty array
+  for(var i = 0; i < dataSetSizeX; i++)
+    dataset[i] = new Array(dataSetSizeY);
 
+  for (var i = 0; i < dataSetSizeX; i++) {
+    for(var j = 0; j < dataSetSizeY; j++){
+      var newNumber = Math.random() * (maxValue - minValue + 1) + minValue;
+      newNumber = Math.floor(newNumber) // Round to nearest integer value      
+      dataset[i][j] = newNumber; //Add new number to array
+    }
+  }
+  return dataset
 }
 
 function plotChicagoTopojsonBoundaries() {
@@ -82,7 +96,7 @@ function plotChicagoTopojsonZipcodes() {
     // Add color legend
     var g = svg.append("g")
         .attr("class", "legendThreshold")
-        .attr("transform", "translate(600,400)");
+        .attr("transform", "translate(" + width * .65 + "," + height / 2 + ")");
     g.append("text")
         .attr("class", "caption")
         .attr("x", 0)
@@ -95,6 +109,7 @@ function plotChicagoTopojsonZipcodes() {
         .scale(colorScale);
     svg.select(".legendThreshold")
         .call(legend);
+  
 
     // Invalid zipcodes (Ranges are inclusive):
     // 60627, 60635, 60648, 60650, 60658, 60662 - 60665, 60667 - 60706, 60708 - 60826, 60828 - End
@@ -148,9 +163,7 @@ var drawBarChart1 = function(){
 // Function to draw bar chart svg format
 var drawBarChart2 = function() {
   let barPadding = 3;
-  let svg = d3.select("#svg_bar_chart")
-  width = +svg.attr("width"),
-  height = +svg.attr("height");
+  let svg = d3.select("#svg_bar_chart");
 
   svg.selectAll("rect")
     .data(randomDataSet)
@@ -177,7 +190,7 @@ var drawBarChart2 = function() {
       return data;
     })
     .attr("x", function(data, index) {
-      return index * (width / randomDataSet.length) + (width / randomDataSet.length) / 2;
+      return index * (500 / randomDataSet.length) + (500 / randomDataSet.length) / 2;
     })
     .attr("y", function(data, index) {
       return 500 - data + 15;
@@ -242,7 +255,177 @@ let createBars = function() {
   .attr("id", "bar")
 }
 
+let createScatterPlot = function() {
+  var width = 960;
+  var height = 1000;
+  var padding = 50;
+  var min = 0;
+  var max = 10;
 
+  // Create random dataset
+  var dataset = generate2DRandomDataSet(10, 2, min, max);
+
+  var minValX = d3.min(dataset, function(d){
+    return d[0];
+  })
+  var maxValX = d3.max(dataset, function(d){
+    return d[0];
+  })
+  var minValY = d3.min(dataset, function(d){
+    return d[1];
+  })
+  var maxValY = d3.max(dataset, function(d){
+    return d[1];
+  })
+
+  // Create scaling function
+  var scaleDataX = d3.scaleLinear()
+    .domain([min, max]) // range of input values
+    .range([padding, width - padding]); // what to scale it to
+
+  var scaleDataY = d3.scaleLinear()
+    .domain([min, max]) // range of input values
+    .range([(height - padding), padding]); // what to scale it to    
+
+  var rScale = d3.scaleLinear()
+    .domain([0, max])
+    .range([5, 20]);    
+
+  // Create axis
+  var xAxis = d3.axisBottom()
+    .scale(scaleDataX)
+    .ticks(5);
+  var yAxis = d3.axisLeft()
+    .scale(scaleDataY)
+    .ticks(5);
+
+  // Create svg element
+  var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("class", "sp")
+
+  // Plot the circles
+
+  svg.selectAll("circle")
+    .data(dataset)
+    .enter()
+    .append("circle")
+    .attr("cx", function(d, i){ 
+      return scaleDataX(d[0]);
+    })
+    .attr("cy", function(d, i){
+      return scaleDataY(d[1]);
+    })
+    .attr("r", function(d, i){
+      return rScale(d[1]);
+    });
+
+    svg.selectAll("text")
+      .data(dataset)
+      .enter()
+      .append("text")
+      .text(function(d, i){
+        return "(" + d[0] + ", " + d[1] + ")";
+      })
+      .attr("x", function(d, i){
+        return scaleDataX(d[0]);
+      })
+      .attr("y", function(d, i){
+        return scaleDataY(d[1]);
+      })
+      .attr("font-family", "sans-serif")
+      .attr("font-size", "11px")
+      .attr("fill", "white");
+      
+    // Add axes
+    svg.append("g") 
+      .attr("class", "axis") 
+      .attr("transform", "translate(0, " + (height - padding)  +")")        
+      .call(xAxis)
+    svg.append("g")
+      .attr("class", "axis")
+      .attr("transform", "translate(" + padding + ", 0)")    
+      .call(yAxis)
+}
+
+// Function to draw bar chart ordinal scale
+var drawBarChart3 = function() {
+  let barPadding = 3;
+  let width = 500;
+  let height = 500;
+
+  // Create SVG
+  let svg = d3.select("body")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height)
+
+  let dataset = generate1DRandomDataSet(20, 0, 200);
+
+  let aScale = d3.scaleBand()
+    .domain(d3.range(dataset.length))
+    .rangeRound([0, width])
+    .padding(0.1);
+
+  console.log(aScale(0))
+  console.log(aScale(1))
+
+  svg.selectAll("rect")
+    .data(dataset)
+    .enter()
+    .append("rect")
+    .attr("x", function(data, index) {
+      return aScale(index);
+    })
+    .attr("y", function(data, index) {
+      return height - data;
+    })
+    .attr("width", aScale.bandwidth())
+    .attr("height", function(data, index) {
+      return data;
+    })
+    .attr("fill", function(data, index) {
+      return "rgb(0, 0, " + (data / 2) + ")";
+    })
+    .on("click", function(data, index){
+      dataset[index] = (Number)(Math.random() * 201);
+
+      svg.selectAll("rect")
+      .data(dataset)
+      .transition()
+      .duration(150)
+      .attr("y", function(data, index) {
+        return height - data;
+      })
+      .attr("height", function(data, index) {
+        return data;
+      })
+      .attr("fill", function(data, index) {
+        return "rgb(0, 0, " + (data / 2) + ")";
+      })
+    })    
+  svg.selectAll("text")
+    .data(randomDataSet)
+    .enter()
+    .append("text")
+    .text(function(data, index){
+      return data;
+    })
+    .attr("x", function(data, index) {
+      return index * (500 / randomDataSet.length) + (500 / randomDataSet.length) / 2;
+    })
+    .attr("y", function(data, index) {
+      return 500 - data + 15;
+    })  
+    .attr("font-family", "sans-serif")
+    .attr("font-size", "11px")
+    .attr("fill", "white")
+    .attr("text-anchor", "middle");
+
+
+
+}
 
 drawBarChart1();
 drawBarChart2();
@@ -250,3 +433,5 @@ plotWorldMap();
 createBars();
 plotChicagoTopojsonBoundaries();
 plotChicagoTopojsonZipcodes();
+createScatterPlot();
+drawBarChart3();
