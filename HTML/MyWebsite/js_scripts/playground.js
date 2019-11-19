@@ -49,7 +49,7 @@ function plotChicagoTopojsonBoundaries() {
     .attr("height", height)
     .attr("class", "topo")
 
-  d3.json("../topojson/chicago.json")
+  d3.json("./topojson/chicago.json")
   .then(function(data){
     console.log("chicagotopoboundaries")
     var geojson = topojson.feature(data, data.objects.chicago)
@@ -76,7 +76,7 @@ function plotChicagoTopojsonZipcodes() {
     .attr("height", height)
     .attr("class", "topo")
 
-  d3.json("../topojson/chicago_zipcodes.json")
+  d3.json("./topojson/chicago_zipcodes.json")
   .then(function(data){
     console.log("chicagotopozipcodes")
     // console.log(data)
@@ -223,7 +223,7 @@ var plotWorldMap = function(element, filename){
   .translate([width / 2, height / 2])
 
   // Load external data and boot
-  d3.json("../geojson/world.geojson")
+  d3.json("./geojson/world.geojson")
   .then(function(data){
     console.log("world")
   console.log(data)
@@ -321,32 +321,48 @@ let createScatterPlot = function() {
       return rScale(d[1]);
     });
 
-    svg.selectAll("text")
-      .data(dataset)
-      .enter()
-      .append("text")
-      .text(function(d, i){
-        return "(" + d[0] + ", " + d[1] + ")";
-      })
-      .attr("x", function(d, i){
-        return scaleDataX(d[0]);
-      })
-      .attr("y", function(d, i){
-        return scaleDataY(d[1]);
-      })
-      .attr("font-family", "sans-serif")
-      .attr("font-size", "11px")
-      .attr("fill", "white");
-      
-    // Add axes
-    svg.append("g") 
-      .attr("class", "axis") 
-      .attr("transform", "translate(0, " + (height - padding)  +")")        
-      .call(xAxis)
-    svg.append("g")
-      .attr("class", "axis")
-      .attr("transform", "translate(" + padding + ", 0)")    
-      .call(yAxis)
+  svg.selectAll("text")
+    .data(dataset)
+    .enter()
+    .append("text")
+    .text(function(d, i){
+      return "(" + d[0] + ", " + d[1] + ")";
+    })
+    .attr("x", function(d, i){
+      return scaleDataX(d[0]);
+    })
+    .attr("y", function(d, i){
+      return scaleDataY(d[1]);
+    })
+    .attr("font-family", "sans-serif")
+    .attr("font-size", "11px")
+    .attr("fill", "white");
+    
+  // Add axes
+  svg.append("g") 
+    .attr("class", "axis") 
+    .attr("transform", "translate(0, " + (height - padding)  +")")        
+    .call(xAxis)
+  svg.append("g")
+    .attr("class", "axis")
+    .attr("transform", "translate(" + padding + ", 0)")    
+    .call(yAxis)
+
+  svg.on("click", function(data, index){
+    svg.selectAll("circle")
+    .data(dataset)
+    .transition()
+    .duration(1000)
+    .on("start", function() {
+      d3.select(this)
+        .attr("fill", "magenta")
+        .attr("r", 7);
+    })
+    .transition()
+    .duration(1000)
+    .attr("fill", "black")
+    .attr("r", 2)
+  })
 }
 
 // Function to draw bar chart ordinal scale
@@ -361,12 +377,12 @@ var drawBarChart3 = function() {
     .attr("width", width)
     .attr("height", height)
 
-  let dataset = generate1DRandomDataSet(20, 0, 200);
+  let dataset = generate1DRandomDataSet(20, 0, 500);
 
   let aScale = d3.scaleBand()
     .domain(d3.range(dataset.length))
     .rangeRound([0, width])
-    .padding(0.1);
+    .paddingInner(0.05);
 
   console.log(aScale(0))
   console.log(aScale(1))
@@ -383,18 +399,19 @@ var drawBarChart3 = function() {
     })
     .attr("width", aScale.bandwidth())
     .attr("height", function(data, index) {
-      return data;
+      return data * 4;
     })
     .attr("fill", function(data, index) {
-      return "rgb(0, 0, " + (data / 2) + ")";
+      return "rgb(0, 0, " + (data / 3) + ")";
     })
     .on("click", function(data, index){
-      dataset[index] = (Number)(Math.random() * 201);
+      dataset[index] = Math.round((Math.random() * 501));
 
       svg.selectAll("rect")
       .data(dataset)
       .transition()
       .duration(150)
+
       .attr("y", function(data, index) {
         return height - data;
       })
@@ -402,21 +419,35 @@ var drawBarChart3 = function() {
         return data;
       })
       .attr("fill", function(data, index) {
-        return "rgb(0, 0, " + (data / 2) + ")";
+        return "rgb(0, 0, " + (data / 3) + ")";
       })
+
+      svg.selectAll("text")
+      .data(dataset)
+      .transition()
+      .duration(150)
+      .text(function(data, index){
+        return data;
+      })
+      .attr("x", function(data, index) {
+        return aScale(index) + aScale.bandwidth() / 2;
+      })
+      .attr("y", function(data, index) {
+        return height - data + 15;
+      })        
     })    
   svg.selectAll("text")
-    .data(randomDataSet)
+    .data(dataset)
     .enter()
     .append("text")
     .text(function(data, index){
       return data;
     })
     .attr("x", function(data, index) {
-      return index * (500 / randomDataSet.length) + (500 / randomDataSet.length) / 2;
+      return aScale(index) + aScale.bandwidth() / 2;
     })
     .attr("y", function(data, index) {
-      return 500 - data + 15;
+      return height - data + 15;
     })  
     .attr("font-family", "sans-serif")
     .attr("font-size", "11px")
