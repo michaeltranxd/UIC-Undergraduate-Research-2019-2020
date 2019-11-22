@@ -280,11 +280,11 @@ let createScatterPlot = function() {
 
   // Create scaling function
   var scaleDataX = d3.scaleLinear()
-    .domain([min, max]) // range of input values
+    .domain([min, max + 1]) // range of input values
     .range([padding, width - padding]); // what to scale it to
 
   var scaleDataY = d3.scaleLinear()
-    .domain([min, max]) // range of input values
+    .domain([min, max + 1]) // range of input values
     .range([(height - padding), padding]); // what to scale it to    
 
   var rScale = d3.scaleLinear()
@@ -305,9 +305,20 @@ let createScatterPlot = function() {
     .attr("height", height)
     .attr("class", "sp")
 
-  // Plot the circles
+  // Create clipPath to contain the circles
+  svg.append("clipPath")
+    .attr("id", "chart-area")
+    .append("rect")
+    .attr("x", padding)
+    .attr("y", padding)
+    .attr("width", width - padding * 3)
+    .attr("height", height - padding * 2)
 
-  svg.selectAll("circle")
+  // Plot the circles
+  svg.append("g")
+    .attr("id", "circles")
+    .attr("clip-path", "url(#chart-area)")
+    .selectAll("circle")
     .data(dataset)
     .enter()
     .append("circle")
@@ -356,19 +367,18 @@ let createScatterPlot = function() {
     .on("start", function() {
       d3.select(this)
         .attr("fill", "magenta")
-        .attr("r", 7);
     })
     .transition()
     .duration(1000)
     .attr("fill", "black")
-    .attr("r", 2)
+    .attr("r", 15)  
   })
 }
 
 // Function to draw bar chart ordinal scale
 var drawBarChart3 = function() {
   let barPadding = 3;
-  let width = 500;
+  let width = 1000;
   let height = 500;
 
   // Create SVG
@@ -404,38 +414,170 @@ var drawBarChart3 = function() {
     .attr("fill", function(data, index) {
       return "rgb(0, 0, " + (data / 3) + ")";
     })
-    .on("click", function(data, index){
-      dataset[index] = Math.round((Math.random() * 501));
+    .on("contextmenu", function (d, i) { // On right click event
+      d3.event.preventDefault(); // Prevent context menu from popping up
+      dataset.pop(); // Pop off the last element
 
-      svg.selectAll("rect")
-      .data(dataset)
+      // Store the new update for bars
+      var bars = svg.selectAll("rect")
+        .data(dataset);
+      
+      aScale.domain(d3.range(dataset.length))
+        
+      bars.enter()
+        .append("rect")
+        .attr("x", function(data, index) {
+          return aScale(index);
+        })
+        .attr("y", function(data, index) {
+          return height - data;
+        })
+        .attr("width", aScale.bandwidth())
+        .attr("height", function(data, index) {
+          return data * 4;
+        })
+        .attr("fill", function(data, index) {
+          return "rgb(0, 0, " + (data / 3) + ")";
+        })
+      .merge(bars)      
       .transition()
-      .duration(150)
-
+      .duration(500)
+      .attr("x", function(data, index) {
+        return aScale(index);
+      })      
       .attr("y", function(data, index) {
         return height - data;
       })
+      .attr("width", aScale.bandwidth())
       .attr("height", function(data, index) {
-        return data;
+        return data * 4;
       })
       .attr("fill", function(data, index) {
         return "rgb(0, 0, " + (data / 3) + ")";
       })
 
-      svg.selectAll("text")
-      .data(dataset)
+      bars.exit()
+        .transition()
+        .duration(500)
+        .attr("x", width)
+        .remove();  
+
+
+      // Store the new update for text
+      texts = svg.selectAll("text")
+        .data(dataset)
+
+      texts.enter()
+      .append("text")
+        .text(function(data, index){
+          return data;
+        })
+        .attr("x", function(data, index) {
+          return aScale(index) + aScale.bandwidth() / 2;
+        })
+        .attr("y", function(data, index) {
+          return height - data + 15;
+        })  
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "11px")
+        .attr("fill", "white")
+        .attr("text-anchor", "middle")
+      .merge(texts)
+        .transition()
+        .duration(500)
+        .text(function(data, index){
+          return data;
+        })
+        .attr("x", function(data, index) {
+          return aScale(index) + aScale.bandwidth() / 2;
+        })
+        .attr("y", function(data, index) {
+          return height - data + 15;
+        })       
+        
+        texts.exit()
+        .transition()
+        .duration(500)
+        .attr("x", width)
+        .remove();          
+    })
+    .on("click", function(data, index){ // onClick event
+      dataset[index] = Math.round((Math.random() * 501));
+
+      var newNumber = Math.floor(Math.random() * 501)
+      dataset.push(newNumber);
+      // Update the scale to the new domain
+      aScale.domain(d3.range(dataset.length))
+
+      // Store the new update for bars
+      var bars = svg.selectAll("rect")
+        .data(dataset);
+
+      bars.enter()
+        .append("rect")
+        .attr("x", function(data, index) {
+          return width;
+        })
+        .attr("y", function(data, index) {
+          return height - data;
+        })
+        .attr("width", aScale.bandwidth())
+        .attr("height", function(data, index) {
+          return data * 4;
+        })
+        .attr("fill", function(data, index) {
+          return "rgb(0, 0, " + (data / 3) + ")";
+        })
+      .merge(bars)      
       .transition()
-      .duration(150)
-      .text(function(data, index){
-        return data;
-      })
+      .duration(500)
       .attr("x", function(data, index) {
-        return aScale(index) + aScale.bandwidth() / 2;
-      })
+        return aScale(index);
+      })      
       .attr("y", function(data, index) {
-        return height - data + 15;
-      })        
-    })    
+        return height - data;
+      })
+      .attr("width", aScale.bandwidth())
+      .attr("height", function(data, index) {
+        return data * 4;
+      })
+      .attr("fill", function(data, index) {
+        return "rgb(0, 0, " + (data / 3) + ")";
+      })
+
+      // Store the new update for text
+      texts = svg.selectAll("text")
+        .data(dataset)
+
+      texts.enter()
+      .append("text")
+        .text(function(data, index){
+          return data;
+        })
+        .attr("x", function(data, index) {
+          return width;
+        })
+        .attr("y", function(data, index) {
+          return height - data + 15;
+        })  
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "11px")
+        .attr("fill", "white")
+        .attr("text-anchor", "middle")
+      .merge(texts)
+        .transition()
+        .duration(500)
+        .text(function(data, index){
+          return data;
+        })
+        .attr("x", function(data, index) {
+          return aScale(index) + aScale.bandwidth() / 2;
+        })
+        .attr("y", function(data, index) {
+          return height - data + 15;
+        })        
+    }) 
+    
   svg.selectAll("text")
     .data(dataset)
     .enter()
