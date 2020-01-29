@@ -583,3 +583,4 @@ plotChicagoTopojsonBoundaries();
 plotChicagoTopojsonZipcodes();
 createScatterPlot();
 drawBarChart3();
+>>>>>>> a115809dbc89be6c694f813dd0c46fe51f3981c9
