@@ -1,4 +1,4 @@
-gender,ethnicity,insurance,zipcode,age,t_stage_clinical,n_stage_clinical,m_stage_clinical,t_stage_pathological,n_stage_pathological,m_stage_pathological
+gender,ethnicity,insurance,zipcode,age,t_stage_clinical,n_stage_clinical,m_stage_clinical,t_stage_path,n_stage_path,m_stage_path
 1,2,9,60620,68,9,1,1,8,1,1
 2,1,10,60618,92,9,1,1,8,7,4
 2,1,2,60010,82,,,,,,
