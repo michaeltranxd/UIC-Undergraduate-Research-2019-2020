@@ -1,30 +1,17 @@
 @import url("../library/library.css");
 
-.research-entry {
-  margin: 0px 10% 5%;
-  border: 1px white solid;
-  border-radius: 30px;
+.topo path {
+  stroke: #fff;
+  stroke-width: .5px;
+  transition: fill 0.2s ease;
 }
 
-.gpip-link:hover {
-  color: #aa6d22;
-  transition: 0.6s;
+.tooltip {
+  position: absolute;
 }
 
-.schedule li {
-  font-family: 'Mali' ,Arial, Helvetica, sans-serif;
-}
 
-.completed {
-  list-style: none;
-}
-
-.completed::before{
-  content: '✔ '
-}
-
-.date {
-  font-size: 40px;
-  font-family: 'Indie Flower';
-  margin: 0px;
+.selected {
+  stroke: black;
+  stroke-width: 1px;
 }
