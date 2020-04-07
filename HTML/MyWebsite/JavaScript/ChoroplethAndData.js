@@ -17,7 +17,7 @@ Promise.all([json, csv]).then(function(values){
   geojson = topojson.feature(jsondata, jsondata.objects["Boundaries - ZIP Codes"])  
 
   // Projection of Chicago
-  projection = d3.geoMercator().fitSize([top_width, top_height], geojson)
+  projection = d3.geoMercator().fitSize([top_width, mapHeight], geojson)
 
   populationData = PopulationData();
 
@@ -50,7 +50,10 @@ var svg_width = parseInt(container.style("width"));
 var svg_height = parseInt(container.style("height"));
 
 var top_width =  svg_width / 3 - innerPadding / 2
-var top_height = svg_height / 2 - innerPadding / 2
+var top_height = svg_height / 1.5 - innerPadding / 2
+
+var mapTitleHeight = top_height * .2; // 20% of the space
+var mapHeight = top_height * .8; // 80% of the space
 
 var map = container
   .append('svg')
@@ -111,13 +114,26 @@ function createMap(zipData, svgWidth) {
   // Add labels for legend
   var labels = [0, 5, 10, 20];
 
+  mapLegend = map
+    .append("svg")
+    .attr('id', 'mapLegend')
+    .attr('width', top_width)
+    .attr('height', mapTitleHeight)
+  
+  mapImage = map
+    .append("svg")
+    .attr('id', 'mapImage')
+    .attr('width', top_width)
+    .attr('height', mapHeight)
+    .attr('transform', `translate(${0}, ${mapTitleHeight})`)    
+
   var legendScale = d3
     .scaleBand()
     .domain(d3.range(labels.length))
     .rangeRound([0, svgWidth])
     .paddingInner(0.05);
 
-  var theLegend = map
+  var theLegend = mapLegend
     .append("g")
     .attr("class", "legend")
     .attr("transform", "translate(20,20)");
@@ -127,14 +143,14 @@ function createMap(zipData, svgWidth) {
     .labelFormat(d3.format("1f"))
     .labels([0, 5, 10, 20])
     .labelWrap(legendScale.bandwidth())
-    .shapeWidth(legendScale.bandwidth())
+    .shapeWidth(50)
     .labelAlign("middle")
     .titleWidth(svgWidth)
     .title("Head and Neck Cancer Patients Treated at UIC")
     .orient('horizontal')
     .scale(colorScales.map);
 
-  map.select(".legend").call(legend);
+  mapLegend.select(".legend").call(legend);
 
   // Create tooltip
   var tip = d3.tip()
@@ -154,7 +170,7 @@ function createMap(zipData, svgWidth) {
   var timeout = null;
 
   // Add the data to the choropleth map
-  map
+  mapImage
     .selectAll("path")
     .data(geojson.features)
     .enter()
@@ -272,6 +288,28 @@ function createDataChart(
       yBarScale
     );
   }
+
+  var chartX = margin.left;
+  var chartY = margin.top + top_height / 3 + margin.bottom + margin.top * 2;
+  demographics
+    .append(`g`)
+    .attr('class', "RatingTitle")
+    .attr('transform', `translate(${chartX}, ${chartY})`)
+    .append("text")
+    .attr('class', 'RatingTitleText')
+    .attr("x", (top_width - margin.left - margin.right) / 2)
+    .attr("y", -30)
+    .style("text-anchor", "middle");
+
+  demographicLabels
+    .append(`g`)
+    .attr('class', "RatingTitle")
+    .attr('transform', `translate(${chartX}, ${chartY})`)
+    .append("text")
+    .attr('class', 'RatingTitleText')
+    .attr("x", (top_width - margin.left - margin.right) / 2)
+    .attr("y", -30)
+    .style("text-anchor", "middle");    
 
   var yRatingScaleC = d3
     .scaleBand()
