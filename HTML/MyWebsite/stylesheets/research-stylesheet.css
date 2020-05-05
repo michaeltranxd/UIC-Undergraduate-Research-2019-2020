@@ -15,3 +15,18 @@
   stroke: black;
   stroke-width: 1px;
 }
+
+/* Setting the background theme color and removing any padding/margin */
+.topo{
+  padding: 0px;
+  margin: 0px 5%;
+}
+
+.t_stage_clinicalxAxis path,
+.n_stage_clinicalxAxis path,
+.m_stage_clinicalxAxis path,
+.t_stage_pathxAxis path,
+.n_stage_pathxAxis path,
+.m_stage_pathxAxis path{
+  stroke: black;
+}

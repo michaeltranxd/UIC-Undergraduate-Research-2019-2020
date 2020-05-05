@@ -27,7 +27,7 @@ Promise.all([json, csv]).then(function(values){
 
 var margin = ({
     top: 20,
-    right: 20,
+    right: 40,
     bottom: 20,
     left: 40
 })
@@ -43,17 +43,29 @@ var screenY = body.style("height");
 var container = body
   .append('svg')
   .attr('width', "90%")
-  .attr('height', "90%")
+  .attr('height', "85%")
   .attr("class", "topo")
+  .attr("border", 1)
+
 
 var svg_width = parseInt(container.style("width"));
 var svg_height = parseInt(container.style("height"));
 
-var top_width =  svg_width / 3 - innerPadding / 2
-var top_height = svg_height / 1.5 - innerPadding / 2
+var top_width =  (svg_width - margin.left - margin.right - innerPadding * 2) / 3
+var top_height = svg_height - margin.top - margin.bottom;
 
 var mapTitleHeight = top_height * .2; // 20% of the space
-var mapHeight = top_height * .8; // 80% of the space
+var mapTitlePadding = top_height * .01; // 1% padding
+var mapHeight = top_height * .75; // 75% of the space
+
+var containerBorder = container
+  .append("rect")
+  .attr("x", 0)
+  .attr("y", 0)
+  .attr("height", svg_height)
+  .attr("width", svg_width)
+  .style("fill", "#fcf8f3")
+  .attr("rx", 30)
 
 var map = container
   .append('svg')
@@ -69,7 +81,7 @@ var demographics = container
   .attr('height', top_height)
   .attr(
   'transform',
-  `translate(${margin.left + top_width + innerPadding}, ${margin.top})`
+  `translate(${margin.left + top_width + innerPadding}, ${margin.top + 40})`
   )
 
 var demographicLabels = container
@@ -80,9 +92,47 @@ var demographicLabels = container
   .attr(
   'transform',
   `translate(${margin.left + top_width * 2 + innerPadding * 2}, ${
-      margin.top
+      margin.top + 40
   })`
   )
+
+var demographicTitle = container
+  .append('svg')
+  .attr('id', 'demotitle')
+  .attr('width', top_width)
+  .attr('height', 75)
+  .attr(
+  'transform',
+  `translate(${margin.left + top_width + innerPadding}, ${
+      0
+  })`
+  )
+
+var demographicLabelsTitle = container
+  .append('svg')
+  .attr('id', 'demotitle')
+  .attr('width', top_width)
+  .attr('height', 75)
+  .attr(
+  'transform',
+  `translate(${margin.left + top_width * 2 + innerPadding * 2}, ${
+      0
+  })`
+  )
+
+demographicTitle.append("text")
+  .attr('class', 'demotitletext')
+  .attr("x", top_width / 2)
+  .attr("y", (75) / 2)
+  .style("text-anchor", "middle")
+  .text("Demographics");
+
+demographicLabelsTitle.append("text")
+  .attr('class', 'demotitletext')
+  .attr("x", top_width / 2)
+  .attr("y", (75) / 2)
+  .style("text-anchor", "middle")
+  .text("Legend");
 
 stackedBarDomain = ["gender", "ethnicity", "insurance"]
 ratingScaleDomain_C = ["t_stage_clinical", "n_stage_clinical", "m_stage_clinical"]
@@ -118,14 +168,14 @@ function createMap(zipData, svgWidth) {
     .append("svg")
     .attr('id', 'mapLegend')
     .attr('width', top_width)
-    .attr('height', mapTitleHeight)
+    .attr('height', mapTitleHeight + mapTitlePadding)    
   
   mapImage = map
     .append("svg")
     .attr('id', 'mapImage')
     .attr('width', top_width)
     .attr('height', mapHeight)
-    .attr('transform', `translate(${0}, ${mapTitleHeight})`)    
+    .attr('transform', `translate(${0}, ${mapTitleHeight + mapTitlePadding})`)    
 
   var legendScale = d3
     .scaleBand()
@@ -136,7 +186,7 @@ function createMap(zipData, svgWidth) {
   var theLegend = mapLegend
     .append("g")
     .attr("class", "legend")
-    .attr("transform", "translate(20,20)");
+    .attr("transform", `translate(${20},20)`);
 
   var legend = d3
     .legendColor()
@@ -186,7 +236,7 @@ function createMap(zipData, svgWidth) {
     .on('mouseover', function(d, i) {
       var zip = d.properties.zip;
       container.selectAll(`#zip${zip}`).each(function(d) {
-        d3.select(this).attr("fill", "#ff6961");
+        d3.select(this).style("stroke", "black").style("opacity", ".5");
         // map.transition().attr('width', width / 4);
       });
       tip.show(zip, this);
@@ -198,7 +248,7 @@ function createMap(zipData, svgWidth) {
       var color = colorScales.map(zipData[zip].c_stage.length);
 
       container.selectAll(`#zip${zip}`).each(function(d) {
-        d3.select(this).attr("fill", color);
+        d3.select(this).style("stroke", "white").style("opacity", "1");
         tip.hide();
       });
     })
@@ -258,7 +308,7 @@ function createDataChart(
   var yBarScale = d3
     .scaleBand()
     .domain(stackedBarDomain)
-    .range([0, chartHeight / 3])
+    .range([0, 180])
     .paddingInner(0.05);
 
   var xAxis = d3
@@ -289,15 +339,15 @@ function createDataChart(
     );
   }
 
-  var chartX = margin.left;
-  var chartY = margin.top + top_height / 3 + margin.bottom + margin.top * 2;
+  var chartX = 0;
+  var chartY = margin.top + 180 + 70;
   demographics
     .append(`g`)
     .attr('class', "RatingTitle")
     .attr('transform', `translate(${chartX}, ${chartY})`)
     .append("text")
     .attr('class', 'RatingTitleText')
-    .attr("x", (top_width - margin.left - margin.right) / 2)
+    .attr("x", top_width / 2)
     .attr("y", -30)
     .style("text-anchor", "middle");
 
@@ -307,14 +357,14 @@ function createDataChart(
     .attr('transform', `translate(${chartX}, ${chartY})`)
     .append("text")
     .attr('class', 'RatingTitleText')
-    .attr("x", (top_width - margin.left - margin.right) / 2)
+    .attr("x", top_width / 2)
     .attr("y", -30)
     .style("text-anchor", "middle");    
 
   var yRatingScaleC = d3
     .scaleBand()
     .domain(ratingScaleDomain_C)
-    .range([0, 2 * chartHeight / 3])
+    .range([0, 150])
     .paddingInner(0.05);
 
   for (var i = 0; i < ratingScaleDomain_C.length; i++) {
@@ -323,7 +373,7 @@ function createDataChart(
       chartData,
       ratingScaleDomain_C[i],
       margin.left,
-      margin.top + top_height / 3 + margin.bottom + margin.top * 2,
+      margin.top + 180 + 70,
       chartWidth,
       yRatingScaleC,
       "Clinical Staging",
@@ -334,7 +384,7 @@ function createDataChart(
   var yRatingScaleP = d3
     .scaleBand()
     .domain(ratingScaleDomain_P)
-    .range([0, 2 * chartHeight / 3])
+    .range([0, 150])
     .paddingInner(0.05);
 
   for (var i = 0; i < ratingScaleDomain_P.length; i++) {
@@ -343,13 +393,14 @@ function createDataChart(
       chartData,
       ratingScaleDomain_P[i],
       margin.left,
-      margin.top + top_height / 3 + margin.bottom + margin.top * 2,
+      margin.top + 180 + 70,
       chartWidth,
       yRatingScaleP,
       "Pathological Staging",
       "#fc8d62"
     );
   }
+  first = false;
 }
 
 function createLabel(svg, label, chartWidth, xTranslate, yTranslate) {
@@ -408,7 +459,7 @@ function createStackedChart(svg, data, label, xScale, yScale) {
       return String(d);
     })
     .attr('x', function(data, index) {
-      return 0;
+      return margin.left;
     })
     .attr("y", function(data, index) {
       return yCoord;
@@ -462,6 +513,11 @@ function createStackedChart(svg, data, label, xScale, yScale) {
     .duration(500);
 }
 
+for (var i = 0; i < ratingScaleDomain_P.length; i++) {
+}
+
+var first = true;
+
 function createRatingScale(
   svg,
   data,
@@ -478,7 +534,7 @@ function createRatingScale(
 
   var max = d3.max(Object.values(data[label]));
   var minR = 3;
-  var maxR = 20;
+  var maxR = 17;
 
   var rScale = d3
     .scaleLinear()
@@ -495,13 +551,15 @@ function createRatingScale(
     .scale(xScale)
     .tickPadding(15);
 
+  if(first){
   var gctxAxis = svg
     .append('g')
     .attr('transform', `translate(${chartX}, ${chartY + yScale(label)})`)
-    .attr("class", `${label}xAxis`);
+    .attr("class", `${label}xAxis`)
 
   // Create axises first so they are behind
-  svg.select(`g.${label}xAxis`).call(xAxis);
+  gctxAxis.call(xAxis);
+  }
   // Make title TODO
   svg
     .select(`g.RatingTitle`)
@@ -530,7 +588,6 @@ function createRatingScale(
     .attr("r", function(data, index) {
       return 0;
     })
-    .style("opacity", .8)
     .merge(circles) // Apply all changes to bars after this point
     .transition()
     .duration(500)
