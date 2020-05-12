@@ -148,8 +148,9 @@ var edit_labels = new Object({
     "T4",
     "T4a",
     "T4b",
+    "Tx",    
     "Tis",
-    "Tx"
+
   ],
   n_stage_clinical: ["N0", "N1", "N2", "N2a", "N2b", "N2c", "N3", "Nx"],
   m_stage_clinical: ["M0", "M1", "Mx"],
