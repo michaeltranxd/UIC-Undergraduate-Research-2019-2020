@@ -91,7 +91,6 @@ var orig_labels = new Object({
   ],
   t_stage_clinical: [
     "T0",
-    "Unknown",
     "Tx",
     "T1",
     "T1a",
@@ -141,8 +140,6 @@ var edit_labels = new Object({
   ],
   t_stage_clinical: [
     "T0",
-    "Unknown",
-    "Tx",
     "T1",
     "T1a",
     "T1b",
@@ -151,11 +148,12 @@ var edit_labels = new Object({
     "T4",
     "T4a",
     "T4b",
-    "Tis"
+    "Tis",
+    "Tx"
   ],
   n_stage_clinical: ["N0", "N1", "N2", "N2a", "N2b", "N2c", "N3", "Nx"],
   m_stage_clinical: ["M0", "M1", "Mx"],
-  t_stage_path: ["T0", "Tis", "T1", "T1a", "T1b", "T2", "T3", "T4a", "T4b"],
+  t_stage_path: ["T0", "T1", "T1a", "T1b", "T2", "T3", "T4a", "T4b", "Tis"],
   n_stage_path: ["N0", "N1", "N2a", "N2b", "N2c", "N3", "NND"],
   m_stage_path: ["M0", "M1", "Msus", "CM0"]
 })
@@ -851,9 +849,7 @@ function getLabelMap() {
 
     for (var index = 0; index < orig_labels[label].length; index++) {
       var objProperty = orig_labels[label][index];
-      // Exception since clinical tumor stage is stored starting from 0. Other data is stored starting at 1
-      if (label == "c_t_stage") labelDictionary[label][index] = objProperty;
-      else labelDictionary[label][index + 1] = objProperty;
+      labelDictionary[label][index + 1] = objProperty;
     }
   }
   return labelDictionary;
@@ -893,7 +889,11 @@ function PopulationData() {
   var dictDemo = {};
 
   for (const label in edit_labels) {
-    dictDemo[label] = {};
+    // Create object for everything except num_people since it will only be a number
+    if(label == 'num_people')
+      dictDemo[label] = 0;
+    else
+      dictDemo[label] = {};
 
     for (var index = 0; index < edit_labels[label].length; index++) {
       var objProperty = edit_labels[label][index];
@@ -901,10 +901,12 @@ function PopulationData() {
     }
   }
 
+  dictDemo["zipData"] = {};
+
+  // Initialize on overall data
   dictDemo.c_stage = [];
   dictDemo.p_stage = [];
-
-  dictDemo["zipData"] = {};
+  dictDemo.num_people = 0;
 
   /* Add all zipcodes in the choropleth zipcode list */
   geojson.features.forEach(function(d) {
@@ -918,23 +920,27 @@ function PopulationData() {
       }
     }
 
+    // Initialize on per zip code data
     dictDemo["zipData"][d.properties.zip].c_stage = [];
     dictDemo["zipData"][d.properties.zip].p_stage = [];
+    dictDemo['zipData'][d.properties.zip].num_people = 0;
   });
 
-  // Go through each of the data
+  // Go through each of the data (each iteration is one person)
   for (const elem of csvdata) {
     if (dictDemo["zipData"][elem.zipcode] === undefined) {
       // Will skip any zipcodes that are not in "chicago"
       continue;
     }
 
-    for (const label in orig_labels) {
+    for (const label in orig_labels) { 
+      // Extract the values from the data
       var dataValue = parseInt(elem[label]);
-
+      
       if (isNaN(dataValue)) continue;
 
       var labelMappedFromValue = getLabelMap()[label][dataValue];
+      //console.log(getLabelMap())
 
       if (
         labelMappedFromValue == 'Aetna' ||
@@ -942,12 +948,14 @@ function PopulationData() {
         labelMappedFromValue == "Charity Care" ||
         labelMappedFromValue == "Cigna"
       ) {
+        // Combine Aetna/Humana/Charity Care/Cigna into Other
         dictDemo["zipData"][elem.zipcode][label]['Other']++;
         dictDemo[label]['Other']++;
       } else if (
         labelMappedFromValue == 'Medicaid' ||
         labelMappedFromValue == 'Medicare'
       ) {
+        // Combine medicaid/medicare into one
         dictDemo["zipData"][elem.zipcode][label]["Medicaid/Medicare"]++;
         dictDemo[label]["Medicaid/Medicare"]++;
       } else {
@@ -980,8 +988,12 @@ function PopulationData() {
       m_stage_clinical
     ]);
     dictDemo.p_stage.push([t_stage_path, n_stage_path, m_stage_path]);
-  }
 
+    dictDemo['zipData'][elem.zipcode].num_people++;
+    dictDemo.num_people++;
+
+  }
+  console.log(dictDemo);
   return dictDemo;
 }
 
@@ -1097,7 +1109,6 @@ function redraw(){
   demographics
     .selectAll("rect")
     .attr("x", function(data, index) {
-      console.log(data);
       return xAxisScale(data[0][0]);
     })    
     .attr("width", function(data, index) {
