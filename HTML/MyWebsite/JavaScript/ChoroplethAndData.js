@@ -219,53 +219,40 @@ var map = container
   .attr('id', 'map')
   .attr('width', top_width)
   .attr('height', top_height)
-  .attr('transform', `translate(${margin.left}, ${margin.top})`)
+  .attr('x', margin.left)
+  .attr('y', margin.top)
 
 var demographics = container
   .append('svg')
   .attr('id', 'demo')
   .attr('width', top_width)
   .attr('height', top_height)
-  .attr(
-  'transform',
-  `translate(${margin.left + top_width + innerPadding}, ${margin.top + 40})`
-  )
+  .attr('x', margin.left + top_width + innerPadding)
+  .attr('y', margin.top + 40)  
 
 var demographicLabels = container
   .append('svg')
   .attr('id', 'demolabels')
   .attr('width', top_width)
   .attr('height', top_height)
-  .attr(
-  'transform',
-  `translate(${margin.left + top_width * 2 + innerPadding * 2}, ${
-      margin.top + 40
-  })`
-  )
+  .attr('x', margin.left + top_width * 2 + innerPadding * 2)
+  .attr('y', margin.top + 40)    
 
 var demographicTitleSvg = container
   .append('svg')
   .attr('id', 'demotitle')
   .attr('width', top_width)
   .attr('height', demoTitleHeight)
-  .attr(
-  'transform',
-  `translate(${margin.left + top_width + innerPadding}, ${
-      0
-  })`
-  )
+  .attr('x', margin.left + top_width + innerPadding)
+  .attr('y', 0)      
 
 var demographicLabelsTitleSvg = container
   .append('svg')
   .attr('id', 'demolabelstitle')
   .attr('width', top_width)
   .attr('height', demoTitleHeight)
-  .attr(
-  'transform',
-  `translate(${margin.left + top_width * 2 + innerPadding * 2}, ${
-      0
-  })`
-  )
+  .attr('x', margin.left + top_width * 2 + innerPadding * 2)
+  .attr('y', 0)        
 
 
 // --------------------------------------- Append necessary elements to SVGs ---------------------------------
@@ -399,7 +386,8 @@ function createMap(zipData, svgWidth) {
     .attr('id', 'mapImage')
     .attr('width', top_width)
     .attr('height', mapHeight)
-    .attr('transform', `translate(${0}, ${mapTitleHeight + mapTitlePadding})`)    
+    .attr('x', 0)
+    .attr('y', mapTitleHeight + mapTitlePadding)              
 
   var legendScale = d3
     .scaleBand()
@@ -1049,37 +1037,23 @@ function redraw(){
 
   demographics
     .attr('width', top_width)
-    .attr(
-      'transform',
-      `translate(${margin.left + top_width + innerPadding}, ${margin.top + 40})`,
-    )
+    .attr('x', margin.left + top_width + innerPadding)
+    .attr('y', margin.top + 40)          
 
   demographicLabels
     .attr('width', top_width)
-    .attr(
-      'transform',
-      `translate(${margin.left + top_width * 2 + innerPadding * 2}, ${
-          margin.top + 40
-      })`
-    )
+    .attr('x', margin.left + top_width * 2 + innerPadding * 2)
+    .attr('y', margin.top + 40)        
 
   demographicTitleSvg
     .attr('width', top_width)
-    .attr(
-    'transform',
-    `translate(${margin.left + top_width + innerPadding}, ${
-        0
-    })`
-   )
+    .attr('x', margin.left + top_width + innerPadding)
+    .attr('y', 0)     
 
   demographicLabelsTitleSvg
     .attr('width', top_width)
-    .attr(
-      'transform',
-      `translate(${margin.left + top_width * 2 + innerPadding * 2}, ${
-          0
-      })`
-    )
+    .attr('x', margin.left + top_width * 2 + innerPadding * 2)
+    .attr('y', 0)         
 
   demoTitle
     .attr("x", (top_width + margin.left) / 2)
@@ -1104,7 +1078,8 @@ function redraw(){
     .select("#mapImage")
     .attr('width', top_width)
     .attr('height', top_height)    
-    .attr('transform', `translate(${0}, ${mapTitleHeight + mapTitlePadding})`)    
+    .attr('x', 0)
+    .attr('y', mapTitleHeight + mapTitlePadding)          
     .selectAll("path")
     .attr("id", function(d, i) {
       return String("zip" + d.properties.zip);
