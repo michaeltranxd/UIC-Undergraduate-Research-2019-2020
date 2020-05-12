@@ -396,7 +396,7 @@ function createMap(zipData, svgWidth) {
   var theLegend = mapLegend
     .append("g")
     .attr("class", "legend")
-    .attr("transform", `translate(${20},20)`);
+    .attr("transform", `translate(${20}, ${20})`);
 
   var legend = d3
     .legendColor()
@@ -411,6 +411,24 @@ function createMap(zipData, svgWidth) {
     .scale(colorScales.map);
 
   mapLegend.select(".legend").call(legend);
+
+  // Create number of people + current zipcode text
+  var currZip = mapLegend
+    .append('g')
+    .attr('class', 'currZipGroup')
+    .attr('transform', `translate(${20}, ${100})`)
+    .append('text')
+    .attr('class', 'currZipText')
+    .text("Zipcode: All")    
+
+  var numPeople = mapLegend
+    .append('g')
+    .attr('class', 'numPeopleGroup')
+    .attr('transform', `translate(${20}, ${130})`)
+    .append('text')
+    .attr('class', 'numPeopleText')
+    .text(`Number of patients: ${populationData.num_people}`)
+
 
   // Create tooltip
   var tip = d3.tip()
@@ -476,6 +494,13 @@ function createMap(zipData, svgWidth) {
           demographicLabels,
           top_width
         );
+
+        // Modify the text
+        currZip
+        .text(`Zipcode: ${d.properties.zip}`)    
+
+        numPeople
+          .text(`Number of patients: ${populationData['zipData'][d.properties.zip].num_people}`)
       }, 300);
     })
     .on('dblclick', function(d, i) {
@@ -487,6 +512,14 @@ function createMap(zipData, svgWidth) {
         demographicLabels,
         top_width
       );
+
+      // Modify the text
+      currZip
+      .text(`Zipcode: All`)    
+
+      numPeople
+        .text(`Number of patients: ${populationData.num_people}`)
+      
     });
 }
 
