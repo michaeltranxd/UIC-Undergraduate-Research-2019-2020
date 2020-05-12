@@ -1,8 +1,8 @@
 @import url("../library/library.css");
 
 .topo path {
-  stroke: #fff;
-  stroke-width: .5px;
+  stroke: #000;
+  stroke-width: 1.2px;
   transition: fill 0.2s ease;
 }
 
@@ -10,16 +10,15 @@
   position: absolute;
 }
 
-
-.selected {
-  stroke: black;
-  stroke-width: 1px;
-}
-
 /* Setting the background theme color and removing any padding/margin */
 .topo{
   padding: 0px;
   margin: 0px 5%;
+}
+
+body {
+  min-width: 1680px; 
+  min-height: 900px;
 }
 
 .t_stage_clinicalxAxis path,
