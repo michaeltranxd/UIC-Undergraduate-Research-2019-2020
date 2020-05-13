@@ -122,21 +122,23 @@ var edit_labels = new Object({
     "70-79",
     ">80"
   ],
-  gender: ["Male", "Female"],
+  gender: ["Male", "Female", "N/A"],
   ethnicity: [
     "White",
     "Black",
     "American Indian",
     "Hispanic",
     "Asian",
-    "Other"
+    "Other",
+    "N/A"
   ],
   insurance: [
     "Medicaid/Medicare",
     "Blue Cross/Blue Shield",
     "Self-Pay",
     "County Care",
-    "Other"
+    "Other",
+    "N/A"
   ],
   t_stage_clinical: [
     "T0",
@@ -163,15 +165,15 @@ var edit_labels = new Object({
 // Define colors to use
 var colors = new Object({
   map: ["#edf8fb", "#b3cde3", "#8c96c6", "#88419d"],
-  gender: ["#779ecb", "#cb779e"],
+  gender: ["#779ecb", "#cb779e", "#000000"],
   age: [
     "rgb(235, 229, 245)",
     "rgb(193, 174, 224)",
     "rgb(165, 137, 210)",
     "rgb(123, 82, 189)"
   ],
-  ethnicity: ["#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854", "#e5c494"],
-  insurance: ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fdbf6f"],
+  ethnicity: ["#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854", "#e5c494", "#000000"],
+  insurance: ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fdbf6f", "#000000"],
   clinical: "#66c2a5",
   pathological: "#fc8d62"
 })
@@ -1031,7 +1033,13 @@ function PopulationData() {
       // Extract the values from the data
       var dataValue = parseInt(elem[label]);
       
-      if (isNaN(dataValue)) continue;
+      if (isNaN(dataValue)){ 
+        if(label == 'gender' || label == 'ethnicity' || label == 'insurance'){
+          dictDemo["zipData"][elem.zipcode][label]["N/A"]++;
+          dictDemo[label]["N/A"]++;
+        }
+        continue;
+      }
 
       var labelMappedFromValue = getLabelMap()[label][dataValue];
       //console.log(getLabelMap())
