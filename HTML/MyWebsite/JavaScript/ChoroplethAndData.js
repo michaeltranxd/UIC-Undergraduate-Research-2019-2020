@@ -51,9 +51,9 @@ var top_height = svg_height - margin.top - margin.bottom;
 var minWidth = 1680; // From research-stylesheet.css
 var minHeight = 900; // From research-stylesheet.css
 
-var mapTitleHeight = top_height * .2; // 20% of the space
-var mapTitlePadding = top_height * .01; // 1% padding
-var mapHeight = top_height * .75; // 75% of the space
+var mapTitleHeight = top_height * .25; // 25% of the space
+var mapTitlePadding = top_height * .02; // 2% padding
+var mapHeight = top_height * .73; // 73% of the space
 
 // Original labels corresponding to the JSON object
 var orig_labels = new Object({
@@ -417,7 +417,7 @@ function createMap(zipData, svgWidth) {
   var currZip = mapLegend
     .append('g')
     .attr('class', 'currZipGroup')
-    .attr('transform', `translate(${20}, ${100})`)
+    .attr('transform', `translate(${20}, ${mapTitleHeight - 60})`)
     .append('text')
     .attr('class', 'currZipText')
     .text("Zipcode: All")    
@@ -425,10 +425,70 @@ function createMap(zipData, svgWidth) {
   var numPeople = mapLegend
     .append('g')
     .attr('class', 'numPeopleGroup')
-    .attr('transform', `translate(${20}, ${130})`)
+    .attr('transform', `translate(${20}, ${mapTitleHeight - 30})`)
     .append('text')
     .attr('class', 'numPeopleText')
     .text(`Number of patients: ${populationData.num_people}`)
+
+
+  // Created own button to prevent using divs
+  var button = mapLegend.append('g')
+    .attr('transform', `translate(${top_width / 2}, ${mapTitleHeight - 70})`)
+    .attr('class', 'backButton')
+    .on('mouseover', function(d, i) {
+      d3.select('.backButtonBackground').transition(200).style('fill', '#66c2a5').style('opacity', .5)
+    })
+    .on('mouseout', function(d, i) {
+      d3.select('.backButtonBackground').transition(200).style('fill', 'white').style('opacity', 1)
+    })
+    .on('mousedown', function(d, i){
+      d3.select('.backButtonBackground').style('fill', '#66c2a5').style('opacity', .8)
+    })
+    .on('mouseup', function(d, i){
+      d3.select('.backButtonBackground').transition(200).style('fill', '#66c2a5').style('opacity', .5)
+    })
+    .on('click', function(d, i){
+      createDataChart(
+        populationData,
+        demographics,
+        demographicLabels,
+        top_width
+      );
+
+      // Modify the text
+      currZip
+      .text(`Zipcode: All`)    
+
+      numPeople
+        .text(`Number of patients: ${populationData.num_people}`)
+      this.onclick = function(){
+        return false;
+      }
+    })    
+  
+  button
+    .append("rect")
+    .attr('class', 'backButtonBackground')  
+    .attr('width', 100)
+    .attr('height', 30)
+    .style('fill', 'white')
+    .style("stroke", 'black')
+    .style("stroke-width", 1);
+ 
+
+  button
+    .append("text")
+    .attr('class', 'backButtonText') 
+    .attr('x', 30)
+    .attr('y', 20)
+    .style('fill', 'black')
+    .text("Reset")    
+  
+  mapLegend.append('g')
+   
+  .attr('transform', `translate(${top_width / 2}, ${mapTitleHeight - 70})`)
+
+
 
 
   // Create tooltip
@@ -1073,9 +1133,9 @@ function redraw(){
 
   chartWidth = top_width - margin.left - margin.right; // Adding margins for chart
 
-  var mapTitleHeight = top_height * .2; // 20% of the space
-  var mapTitlePadding = top_height * .01; // 1% padding
-  var mapHeight = top_height * .75; // 75% of the space
+  var mapTitleHeight = top_height * .25; // 25% of the space
+  var mapTitlePadding = top_height * .02; // 2% padding
+  var mapHeight = top_height * .73; // 73% of the space
 
   map
     .attr('width', top_width)
