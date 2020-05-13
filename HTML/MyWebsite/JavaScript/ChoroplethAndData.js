@@ -481,10 +481,10 @@ function createMap(zipData, svgWidth) {
   button
     .append("text")
     .attr('class', 'backButtonText') 
-    .attr('x', 30)
+    .attr('x', 8)
     .attr('y', 20)
     .style('fill', 'black')
-    .text("Reset")    
+    .text("All Zipcodes")    
   
   mapLegend.append('g')
    
